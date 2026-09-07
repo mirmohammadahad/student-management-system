@@ -1,0 +1,241 @@
+/* ================================
+   STUDENT MANAGEMENT SYSTEM
+   PROFESSIONAL UI DESIGN
+================================ */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+/* ================================
+   RESET
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ================================
+   BODY
+================================ */
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    min-height: 100vh;
+    padding: 50px 20px;
+    color: #1e293b;
+}
+
+
+/* ================================
+   MAIN CONTAINER
+================================ */
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+/* ================================
+   MAIN TITLE
+================================ */
+
+h1 {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+
+/* ================================
+   STUDENT CARD
+================================ */
+
+.student-card {
+    position: relative;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    padding: 25px 30px;
+
+    margin-bottom: 20px;
+
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    overflow: hidden;
+}
+
+
+/* LEFT BLUE DESIGN LINE */
+
+.student-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 6px;
+    height: 100%;
+
+    background: linear-gradient(
+        180deg,
+        #2563eb,
+        #7c3aed
+    );
+}
+
+
+/* HOVER EFFECT */
+
+.student-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 20px 40px rgba(15, 23, 42, 0.15);
+}
+
+
+/* ================================
+   STUDENT NAME
+================================ */
+
+.student-card h2 {
+    font-size: 24px;
+
+    font-weight: 600;
+
+    color: #1d4ed8;
+
+    margin-bottom: 15px;
+}
+
+
+/* ================================
+   STUDENT INFORMATION
+================================ */
+
+.student-card p {
+    font-size: 15px;
+
+    color: #64748b;
+
+    margin: 10px 0;
+
+    line-height: 1.6;
+}
+
+
+/* LABELS */
+
+.student-card strong {
+    color: #334155;
+
+    font-weight: 600;
+}
+
+
+/* ================================
+   NO STUDENT MESSAGE
+================================ */
+
+.no-student {
+    background: white;
+
+    padding: 50px 30px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+
+.no-student p {
+    font-size: 18px;
+
+    color: #64748b;
+}
+
+
+/* ================================
+   RESPONSIVE DESIGN
+================================ */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 30px 15px;
+    }
+
+
+    h1 {
+        font-size: 28px;
+
+        margin-bottom: 25px;
+    }
+
+
+    .student-card {
+        padding: 20px;
+    }
+
+
+    .student-card h2 {
+        font-size: 20px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 24px;
+    }
+
+
+    .student-card p {
+        font-size: 14px;
+    }
+
+}
+body {
+    font-family: "Poppins", sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #667eea 0%,
+        #764ba2 50%,
+        #6a11cb 100%
+    );
+
+    min-height: 100vh;
+
+    padding: 50px 20px;
+
+    color: #1e293b;
+}

@@ -1,30 +1,54 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Student List</title>
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
 
-    <h1>Student List</h1>
+    <div class="container">
 
-    {% for student in students %}
+        <h1>🎓 Student Management System</h1>
 
-        <div>
+        {% for student in students %}
+
+        <div class="student-card">
+
             <h2>{{ student.name }}</h2>
-            <p>ID: {{ student.student_id }}</p>
-            <p>Email: {{ student.email }}</p>
+
+            <p>
+                <strong>Student ID:</strong>
+                {{ student.student_id }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ student.email }}
+            </p>
+
+            <p>
+                <strong>Department:</strong>
+                {{ student.department.name }}
+            </p>
+
         </div>
 
-        <hr>
+        {% empty %}
 
-    {% empty %}
+        <div class="no-student">
+            <p>No students found.</p>
+        </div>
 
-        <p>No students found.</p>
+        {% endfor %}
 
-    {% endfor %}
+    </div>
 
 </body>
 
