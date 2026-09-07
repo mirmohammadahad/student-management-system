@@ -2,6 +2,5 @@ from django.apps import AppConfig
 
 
 class StudentsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
     name = 'students'
-if __name__ == 'students.apps':
-    app_run(host="0.0.0.0", debug=True)
