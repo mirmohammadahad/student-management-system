@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if enrollment %}Edit Enrollment{% else %}New Enrollment{% endif %}</title>
+</head>
+<body>
+    <h2>{% if enrollment %}Edit Enrollment{% else %}New Enrollment{% endif %}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <button type="submit">Save</button>
+        <a href="{% url 'enrollments:enrollment_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

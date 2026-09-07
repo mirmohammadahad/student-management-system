@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enrollment List</title>
+</head>
+<body>
+    <h2>Enrollment List</h2>
+    <a href="{% url 'enrollments:enrollment_create' %}">New Enrollment</a>
+    <br><br>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Course Code</th>
+                <th>Status</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in enrollments %}
+            <tr>
+                <td>{{ item.student.student_id }}</td>
+                <td>{{ item.course.code }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.enrollment_date|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'enrollments:enrollment_update' item.pk %}">Edit</a> | 
+                    <a href="{% url 'enrollments:enrollment_delete' item.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No enrollments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
