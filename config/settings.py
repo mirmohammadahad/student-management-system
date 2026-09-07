@@ -11,7 +11,11 @@ SECRET_KEY = 'django-insecure-change-this-later'
 # Development mode
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'student-management-system-3-3rk1.onrender.com',
+]
 
 
 # Application definition
