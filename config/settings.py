@@ -14,7 +14,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'student-management-system-3-3rk1.onrender.com',
+    '.onrender.com',
 ]
 
 
