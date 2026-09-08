@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Enrollment Ledger Report{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-secondary mb-0">Enrollment Ledger</h3>
+</div>
+
+<!-- Controls Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-6 position-relative">
+        <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Live search by Student ID, Email, Course..." autocomplete="off">
+        </div>
+        <div id="searchResults" class="list-group position-absolute w-100 shadow-sm mt-1" style="display: none; z-index: 1000;"></div>
+    </div>
+    
+    <div class="col-md-3 ms-auto">
+        <form method="GET" action="{% url 'enrollments:ledger' %}">
+            <select name="status" onchange="this.form.submit()" class="form-select">
+                <option value="">Filter by Status (All)</option>
+                <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>PENDING</option>
+                <option value="APPROVED" {% if status_filter == 'APPROVED' %}selected{% endif %}>APPROVED</option>
+                <option value="CANCELLED" {% if status_filter == 'CANCELLED' %}selected{% endif %}>CANCELLED</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-primary">
+                <tr>
+                    <th>Student ID</th>
+                    <th>Email</th>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th>Status (Dynamic AJAX)</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in page_obj %}
+                <tr>
+                    <td class="fw-bold">{{ item.student.student_id }}</td>
+                    <td>{{ item.student.email }}</td>
+                    <td><span class="badge bg-dark">{{ item.course.code }}</span></td>
+                    <td>{{ item.course.title }}</td>
+                    <td>
+                        <select onchange="updateStatus('{{ item.id }}', this.value)" class="form-select form-select-sm fw-bold border-2">
+                            <option value="PENDING" class="text-warning fw-bold" {% if item.status == 'PENDING' %}selected{% endif %}>PENDING</option>
+                            <option value="APPROVED" class="text-success fw-bold" {% if item.status == 'APPROVED' %}selected{% endif %}>APPROVED</option>
+                            <option value="CANCELLED" class="text-danger fw-bold" {% if item.status == 'CANCELLED' %}selected{% endif %}>CANCELLED</option>
+                        </select>
+                    </td>
+                    <td>{{ item.enrollment_date|date:"Y-m-d" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">No ledger records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination -->
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateStatus(enrollmentId, newStatus) {
+    const formData = new FormData();
+    formData.append('status', newStatus);
+
+    fetch(`/enrollments/${enrollmentId}/update-status-ajax/`, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            console.log('Status updated dynamically');
+        } else {
+            alert('Status update failed!');
+        }
+    });
+}
+
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+searchInput.addEventListener('input', function() {
+    const query = this.value.trim();
+    if (query.length < 1) {
+        searchResults.style.display = 'none';
+        return;
+    }
+
+    fetch(`/enrollments/live-search/?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+            searchResults.innerHTML = '';
+            if (data.results.length > 0) {
+                data.results.forEach(item => {
+                    const a = document.createElement('a');
+                    a.className = 'list-group-item list-group-item-action';
+                    a.innerHTML = `<strong>${item.student_id}</strong> - ${item.course_code} (${item.status})`;
+                    a.onclick = function() {
+                        window.location.href = `?search=${encodeURIComponent(item.student_id)}`;
+                    };
+                    searchResults.appendChild(a);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.innerHTML = '<div class="list-group-item text-danger">No matching records found</div>';
+                searchResults.style.display = 'block';
+            }
+        });
+});
+
+document.addEventListener('click', e => {
+    if (e.target !== searchInput) searchResults.style.display = 'none';
+});
+</script>
+{% endblock %}

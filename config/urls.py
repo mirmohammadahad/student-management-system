@@ -17,10 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from enrollments.views import dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', dashboard, name='dashboard'),
     path('students/', include('students.urls')),
-    path('courses/', include('courses.urls')),  # এই লাইনটি যোগ করুন
+    path('courses/', include('courses.urls')),
     path('enrollments/', include('enrollments.urls')),
 ]

@@ -1,22 +1,22 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Course
 
 # ১. কোর্সের তালিকা প্রদর্শন
+@login_required
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'courses/course_list.html', {'courses': courses})
 
 # ২. নতুন কোর্স তৈরি
+@login_required
 def course_create(request):
     if request.method == 'POST':
         code = request.POST.get('code')
         title = request.POST.get('title')
         credit_hours = request.POST.get('credit_hours')
         course_fee = request.POST.get('course_fee')
-        is_active = request.POST.get('is_active') == 'on'  # Checkbox হ্যান্ডেল করা
+        is_active = request.POST.get('is_active') == 'on'
 
         Course.objects.create(
             code=code,
@@ -30,6 +30,7 @@ def course_create(request):
     return render(request, 'courses/course_form.html')
 
 # ৩. কোর্স আপডেট করা
+@login_required
 def course_update(request, pk):
     course = get_object_or_404(Course, pk=pk)
 
@@ -45,6 +46,7 @@ def course_update(request, pk):
     return render(request, 'courses/course_form.html', {'course': course})
 
 # ৪. কোর্স মুছে ফেলা
+@login_required
 def course_delete(request, pk):
     course = get_object_or_404(Course, pk=pk)
 
